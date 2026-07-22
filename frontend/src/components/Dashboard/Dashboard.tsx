@@ -4,7 +4,7 @@ import { getTasks, getTaskStats } from '../../services/taskService';
 import type { Task, TaskStats, TaskFilters as TaskFiltersType } from '../../types';
 import StatsCard from './StatsCard';
 import TaskList from '../Tasks/TaskList';
-
+import { toast } from 'react-toastify';
 import TaskFiltersComponent from '../Tasks/TaskFilters';
 import TaskForm from '../Tasks/TaskForm';
 import { useAuth } from '../../context/AuthContext';
@@ -51,18 +51,20 @@ const Dashboard: React.FC = () => {
     }, [filters]);
 
     const handleDelete = async (taskId: number): Promise<void> => {
-        if (window.confirm('Are you sure you want to delete this task?')) {
-            try {
-                await import('../../services/taskService').then(({ deleteTask }) =>
-                    deleteTask(taskId)
-                );
-                fetchTasks();
-                fetchStats();
-            } catch (error) {
-                console.error('Error deleting task:', error);
-            }
+    if (window.confirm('Are you sure you want to delete this task?')) {
+        try {
+            await import('../../services/taskService').then(({ deleteTask }) =>
+                deleteTask(taskId)
+            );
+            toast.success('🗑️ Task deleted successfully!');
+            fetchTasks();
+            fetchStats();
+        } catch (error) {
+            console.error('Error deleting task:', error);
+            toast.error('❌ Failed to delete task');
         }
-    };
+    }
+};
 
     const handleEdit = (task: Task): void => {
         setEditingTask(task);

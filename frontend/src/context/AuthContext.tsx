@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import { toast } from 'react-toastify';
 import api from '../services/api';
 import { User, AuthContextType } from '../types';
 
@@ -35,12 +36,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             setUser(user);
-
+            
+            toast.success('🎉 Login successful! Welcome back!');
             return { success: true };
         } catch (error: any) {
+            const message = error.response?.data?.message || 'Login failed. Please try again.';
+            toast.error(`❌ ${message}`);
             return {
                 success: false,
-                message: error.response?.data?.message || 'Login failed. Please try again.',
+                message,
             };
         }
     };
@@ -49,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setUser(null);
+        toast.info('👋 Logged out successfully');
     };
 
     const value: AuthContextType = {
