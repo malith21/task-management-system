@@ -5,7 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import Login from './components/Auth/Login';
-import Dashboard from './components/Dashboard/Dashboard';
+import Dashboard from './pages/Dashboard';
+import Tasks from './pages/Tasks';
+import Profile from './pages/Profile';
 import './App.css';
 
 const App: React.FC = () => {
@@ -19,6 +21,22 @@ const App: React.FC = () => {
                         element={
                             <ProtectedRoute>
                                 <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/tasks"
+                        element={
+                            <ProtectedRoute>
+                                <Tasks />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
                             </ProtectedRoute>
                         }
                     />
